@@ -1,9 +1,12 @@
 package com.example.saar.Timeline_Events;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.saar.NoInternetFragment;
 import com.example.saar.R;
 import com.example.saar.Retrofit.GetDataService;
 import com.example.saar.Retrofit.RetrofitClientInstance;
@@ -29,6 +33,14 @@ public class TimelineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if(!isNetworkConnected()){
+            Fragment fragment = new NoInternetFragment();
+            if (fragment != null && getActivity()!=null) {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+            }
+        }
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_timeline, container, false);
 
@@ -70,5 +82,10 @@ public class TimelineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle(R.string.timeline);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }

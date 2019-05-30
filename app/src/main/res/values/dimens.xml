@@ -44,4 +44,7 @@
     <dimen name="timeline_line_width">3dp</dimen>
     <dimen name="timeline_marker_size">20dp</dimen>
 
+    <!--No Internet Page-->
+    <dimen name="cross_dimension">120dp</dimen>
+
 </resources>
