@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Gallery.GalleryFragment"
-    android:background="@color/about_us_background">
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:text="check internet connection"
+        android:gravity="center"
+        android:textSize="@dimen/textsize_big"
+        android:id="@+id/no_internet_text"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -12,4 +21,4 @@
         android:id="@+id/recycler_view_gallery"
         tools:listitem="@layout/gallery_list_row" />
 
-</RelativeLayout>
+</LinearLayout>

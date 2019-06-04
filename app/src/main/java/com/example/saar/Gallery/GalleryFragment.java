@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.saar.NoInternetFragment;
@@ -34,39 +35,36 @@ public class GalleryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (!isNetworkConnected()) {
-            Fragment fragment = new NoInternetFragment();
-            if (fragment != null && getActivity() != null) {
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
-            }
-        }
+
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
+        TextView no_internet = rootView.findViewById(R.id.no_internet_text);
+        if (!isNetworkConnected()) {
+                no_internet.setVisibility(View.VISIBLE);
+        } else {
+            no_internet.setVisibility(View.GONE);
+            recyclerView = rootView.findViewById(R.id.recycler_view_gallery);
+            progressDialog = new ProgressDialog(rootView.getContext());
+            progressDialog.setMessage("Loading....");
+            progressDialog.show();
 
-        recyclerView = rootView.findViewById(R.id.recycler_view_gallery);
-        progressDialog = new ProgressDialog(rootView.getContext());
-        progressDialog.setMessage("Loading....");
-        progressDialog.show();
+            /*Create handle for the RetrofitInstance interface*/
+            GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+            Call<List<Gallery>> call = service.getAllPhotos();
+            call.enqueue(new Callback<List<Gallery>>() {
+                @Override
+                public void onResponse(Call<List<Gallery>> call, Response<List<Gallery>> response) {
+                    progressDialog.dismiss();
+                    generateDataList(response.body(), rootView);
+                }
 
-        /*Create handle for the RetrofitInstance interface*/
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-        Call<List<Gallery>> call = service.getAllPhotos();
-        call.enqueue(new Callback<List<Gallery>>() {
-            @Override
-            public void onResponse(Call<List<Gallery>> call, Response<List<Gallery>> response) {
-                progressDialog.dismiss();
-                generateDataList(response.body(), rootView);
-            }
-
-            @Override
-            public void onFailure(Call<List<Gallery>> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(rootView.getContext(), "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+                @Override
+                public void onFailure(Call<List<Gallery>> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(rootView.getContext(), "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
         return rootView;
     }
 
