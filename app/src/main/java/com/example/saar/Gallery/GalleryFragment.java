@@ -6,7 +6,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.saar.NoInternetFragment;
 import com.example.saar.R;
 import com.example.saar.Retrofit.GetDataService;
 import com.example.saar.Retrofit.RetrofitClientInstance;
@@ -38,7 +36,7 @@ public class GalleryFragment extends Fragment {
 
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_gallery, container, false);
-        TextView no_internet = rootView.findViewById(R.id.no_internet_text);
+        TextView no_internet = rootView.findViewById(R.id.no_internet_text_gallery);
         if (!isNetworkConnected()) {
                 no_internet.setVisibility(View.VISIBLE);
         } else {

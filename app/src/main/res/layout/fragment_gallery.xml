@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:text="check internet connection"
+        android:text="@string/no_internet"
         android:gravity="center"
         android:textSize="@dimen/textsize_big"
-        android:id="@+id/no_internet_text"/>
+        android:id="@+id/no_internet_text_gallery"
+        android:textColor="@color/black"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
